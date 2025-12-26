@@ -1,9 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ARKO - Luxury Real Estate & Architecture
 
-## Getting Started
+A premium, modern real estate website showcasing luxury properties with elegant design and smooth animations. Built with Next.js, featuring a sophisticated gold/amber color scheme and interactive hover effects throughout.
 
-First, run the development server:
+## 🏗️ Features
 
+- **Premium Luxury Theme**: Sophisticated gold/amber color palette designed for high-end real estate clients
+- **Interactive Hover Effects**: Smooth, elegant button animations with scale transforms and shadow effects
+- **Glassmorphism Design**: Modern glass-effect components with backdrop blur
+- **Responsive Design**: Fully responsive layout optimized for all devices
+- **Smooth Animations**: Framer Motion powered animations for seamless user experience
+- **Modern UI Components**: Custom navbar with tubelight effect, animated sections, and premium styling
+
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: Premium gold/amber (`hsl(38 85% 55%)`) - Replaces standard orange for a more luxurious feel
+- **Background**: Deep dark blue (`hsl(222 47% 6%)`)
+- **Foreground**: Light cream (`hsl(210 40% 98%)`)
+- **Accents**: Sophisticated muted tones with gold highlights
+
+### Interactive Elements
+All buttons feature premium hover effects:
+- **Scale Transform**: Buttons scale to 110% on hover (105% for form buttons)
+- **Shadow Effects**: Elegant glow shadows matching the button's color scheme
+- **Smooth Transitions**: 300ms cubic-bezier transitions for premium feel
+- **Active States**: Visual feedback on click with scale-down effect
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd real-estate
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 ```bash
 npm run dev
 # or
@@ -14,23 +60,88 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+real-estate/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx          # Main homepage with all sections
+│   │   ├── layout.tsx         # Root layout with navbar
+│   │   └── globals.css        # Global styles and theme configuration
+│   ├── components/
+│   │   └── ui/
+│   │       └── tubelight-navbar.tsx  # Custom animated navbar
+│   └── lib/
+│       ├── constants.ts       # Image URLs and constants
+│       └── utils.ts           # Utility functions
+├── public/                    # Static assets
+└── package.json
+```
 
-## Learn More
+## 🛠️ Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- **Next.js 16** - React framework with App Router
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Tailwind CSS v4** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **Lucide React** - Icon library
+- **Next/Font** - Optimized font loading (Inter & Playfair Display)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Key Sections
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Hero Section**: Full-screen hero with call-to-action buttons
+- **About Section**: Company information with statistics
+- **Projects Section**: Featured property listings with hover effects
+- **Services Section**: Service offerings with interactive cards
+- **CTA Section**: Call-to-action for consultations
+- **Contact Section**: Contact form and information
+- **Footer**: Social links and copyright
 
-## Deploy on Vercel
+## 🎨 Custom Button Classes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project uses custom CSS classes for reliable hover effects:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `.btn-primary` - Primary gold buttons (Explore Properties, Schedule Consultation, Send Message)
+- `.btn-glass` - Glass/backdrop buttons (Watch Showreel)
+- `.btn-foreground` - Foreground color buttons (View All Projects)
+- `.btn-white` - White background buttons (View Details in project cards)
+- `.btn-submit` - Form submit buttons with adjusted scale
+
+## 📝 Customization
+
+### Changing Colors
+Edit the color variables in `src/app/globals.css`:
+```css
+--color-primary: hsl(38 85% 55%); /* Change this for different accent color */
+```
+
+### Modifying Hover Effects
+Adjust button hover styles in `src/app/globals.css` under the button class definitions.
+
+## 🚢 Deployment
+
+### Deploy on Vercel
+
+The easiest way to deploy is using [Vercel](https://vercel.com):
+
+1. Push your code to GitHub
+2. Import your repository on Vercel
+3. Vercel will automatically detect Next.js and configure the build
+
+Or use the Vercel CLI:
+```bash
+npm i -g vercel
+vercel
+```
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 👨‍💻 Development
+
+Built with attention to detail for luxury real estate clients, featuring premium design elements and smooth user interactions throughout.
