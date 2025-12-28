@@ -1,15 +1,38 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import { IMAGES } from "@/lib/constants"
 import { ArrowRight, MapPin, Bed, Bath, Square } from "lucide-react"
+import ThreeDCarousel from "@/components/ThreeDCarousel"
+import { GlowingCards, GlowingCard } from "@/components/ui/glowing-cards"
 
 export default function Home() {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  })
+
+  // Hero Parallax - moves up slower for a more deliberate shutter effect
+  const heroY = useTransform(scrollYProgress, [0, 0.25], ["0%", "-100%"])
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+
+  // About Section Reveal - Scales up more dramatically and takes longer
+  const aboutScale = useTransform(scrollYProgress, [0, 0.25], [0.65, 1])
+  const aboutOpacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1])
+
+  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0])
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+    <div ref={containerRef} className="min-h-screen">
+      {/* Hero Section with Shutter Effect */}
+      <motion.section
+        id="home"
+        style={{ y: heroY, opacity: heroOpacity }}
+        className="fixed top-0 left-0 right-0 h-screen flex items-center justify-center overflow-hidden z-20 bg-background"
+      >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -54,21 +77,22 @@ export default function Home() {
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
+          style={{ opacity: scrollIndicatorOpacity }}
         >
           <div className="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
             <div className="w-1.5 h-3 bg-white/60 rounded-full" />
           </div>
         </motion.div>
-      </section>
+      </motion.section>
 
-      {/* About Section */}
-      <section id="about" className="py-24 bg-background">
+      {/* Spacer for Fixed Hero */}
+      <div className="h-screen" />
+
+      {/* About Section with Reveal Effect */}
+      <section id="about" className="py-24 bg-background relative z-10">
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            style={{ scale: aboutScale, opacity: aboutOpacity }}
             className="grid md:grid-cols-2 gap-16 items-center"
           >
             <div>
@@ -141,77 +165,70 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                img: IMAGES.project1,
-                title: "The Meridian",
-                location: "Beverly Hills, CA",
-                beds: 5,
-                baths: 6,
-                sqft: "8,500"
-              },
-              {
-                img: IMAGES.project2,
-                title: "Azure Heights",
-                location: "Miami Beach, FL",
-                beds: 4,
-                baths: 5,
-                sqft: "6,200"
-              },
-              {
-                img: IMAGES.project3,
-                title: "Skyline Vista",
-                location: "Manhattan, NY",
-                beds: 3,
-                baths: 4,
-                sqft: "4,800"
-              },
-            ].map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group cursor-pointer relative z-10 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 rounded-2xl p-2 -m-2"
-              >
-                <div className="relative overflow-hidden rounded-2xl mb-4">
-                  <Image
-                    src={project.img}
-                    alt={project.title}
-                    width={400}
-                    height={300}
-                    className="object-cover w-full h-[300px] group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button className="btn-white w-full py-3 bg-white/90 backdrop-blur-md rounded-full text-black font-semibold">
-                      View Details
-                    </button>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
-                  <MapPin className="w-4 h-4" />
-                  {project.location}
-                </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-3">
-                  {project.title}
-                </h3>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Bed className="w-4 h-4" /> {project.beds} Beds
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Bath className="w-4 h-4" /> {project.baths} Baths
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Square className="w-4 h-4" /> {project.sqft} sqft
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+
+          <div className="relative w-full py-10">
+            <ThreeDCarousel
+              items={[
+                {
+                  id: 1,
+                  title: "The Meridian",
+                  brand: "Beverly Hills, CA",
+                  description: "An ultra-modern estate featuring panoramic city views, infinity pools, and state-of-the-art smart home integration.",
+                  tags: ["Estate", "Smart Home", "Panoramic Views"],
+                  imageUrl: IMAGES.project1,
+                  link: "#"
+                },
+                {
+                  id: 2,
+                  title: "Azure Heights",
+                  brand: "Miami Beach, FL",
+                  description: "Oceanfront luxury living redefined with floor-to-ceiling glass, private beach access, and resort-style amenities.",
+                  tags: ["Oceanfront", "Resort Style", "Miami Modern"],
+                  imageUrl: IMAGES.project2,
+                  link: "#"
+                },
+                {
+                  id: 3,
+                  title: "Skyline Vista",
+                  brand: "Manhattan, NY",
+                  description: "A penthouse masterpiece offering 360-degree views of the skyline, private elevator access, and rooftop gardens.",
+                  tags: ["Penthouse", "City Views", "Rooftop Garden"],
+                  imageUrl: IMAGES.project3,
+                  link: "#"
+                },
+                {
+                  id: 4,
+                  title: "The Pinnacle",
+                  brand: "Dubai, UAE",
+                  description: "Reaching for the clouds, this architectural marvel defines the new standard of vertical luxury in the heart of Dubia.",
+                  tags: ["Skyscraper", "Luxury", "Innovation"],
+                  imageUrl: IMAGES.architecture,
+                  link: "#"
+                },
+                {
+                  id: 5,
+                  title: "Serenity Bay",
+                  brand: "Malibu, CA",
+                  description: "A secluded coastal retreat blending organic architecture with the raw beauty of the Pacific coastline.",
+                  tags: ["Coastal", "Secluded", "Organic Design"],
+                  imageUrl: IMAGES.hero,
+                  link: "#"
+                },
+                {
+                  id: 6,
+                  title: "Urban Oasis",
+                  brand: "Tokyo, Japan",
+                  description: "A zen-inspired sanctuary in the midst of the bustling metropolis, featuring minimalist design and indoor gardens.",
+                  tags: ["Minimalist", "Zen", "Urban Retreat"],
+                  imageUrl: IMAGES.interior1,
+                  link: "#"
+                }
+              ]}
+              autoRotate={true}
+              rotateInterval={5000}
+            />
           </div>
+
 
           <div className="text-center mt-12">
             <button className="btn-foreground px-8 py-4 bg-foreground text-background rounded-full font-semibold flex items-center justify-center gap-2 mx-auto group">
@@ -244,29 +261,43 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <GlowingCards
+            gap="2rem"
+            glowRadius={20}
+            glowOpacity={0.6}
+            animationDuration={300}
+            responsive={true}
+          >
             {[
-              { icon: "🏗️", title: "Architecture", desc: "Award-winning architectural design" },
-              { icon: "🎨", title: "Interior Design", desc: "Bespoke interior solutions" },
-              { icon: "🏡", title: "Development", desc: "Full-scale property development" },
-              { icon: "🔑", title: "Consultation", desc: "Expert real estate advisory" },
+              { icon: "🏗️", title: "Architecture", desc: "Award-winning architectural design", color: "#d4af37" },
+              { icon: "🎨", title: "Interior Design", desc: "Bespoke interior solutions", color: "#e5e7eb" },
+              { icon: "🏡", title: "Development", desc: "Full-scale property development", color: "#d4af37" },
+              { icon: "🔑", title: "Consultation", desc: "Expert real estate advisory", color: "#e5e7eb" },
             ].map((service, index) => (
-              <motion.div
+              <GlowingCard
                 key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 transform hover:scale-[1.02] group cursor-pointer"
+                glowColor={service.color}
+                className="flex flex-col items-center text-center p-8 cursor-pointer h-full"
               >
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground">{service.desc}</p>
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="w-full"
+                >
+                  <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-serif font-semibold text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
+                    {service.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {service.desc}
+                  </p>
+                </motion.div>
+              </GlowingCard>
             ))}
-          </div>
+          </GlowingCards>
         </div>
       </section>
 
