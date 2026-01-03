@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
 import { NavBar } from "@/components/ui/tubelight-navbar"
+import { ScrollProgress } from "@/components/ui/scroll-progress"
+import { FloatingOrbs, GridPattern, NoiseTexture } from "@/components/ui/floating-elements"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,8 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-screen bg-gradient-to-b from-background to-card antialiased">
+        <ScrollProgress />
+        <FloatingOrbs />
+        <GridPattern />
+        <NoiseTexture />
         <NavBar />
-        <main className="relative">
+        <main className="relative z-10">
           {children}
         </main>
       </body>

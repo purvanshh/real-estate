@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 /* Glassmorphism Design System for Tailwind CSS v4 */
+/* stylelint-disable-next-line at-rule-no-unknown */
 @theme {
   /* Dark Theme Colors */
   --color-background: hsl(222 47% 6%);
@@ -74,6 +75,8 @@
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
+
+  /* stylelint-disable-next-line at-rule-no-unknown */
   @theme {
     --color-background: hsl(222.2 84% 4.9%);
     --color-foreground: hsl(210 40% 98%);
@@ -141,85 +144,182 @@ body {
 /* Button Hover Effects - Custom classes for reliable hover effects */
 button {
   cursor: pointer;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Primary button hover effects */
 .btn-primary {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, box-shadow;
 }
 
 .btn-primary:hover {
-  transform: scale(1.1);
-  background-color: hsl(38 85% 50%);
-  box-shadow: 0 10px 40px hsl(38 85% 55% / 0.4);
+  background-color: hsl(38 85% 45%) !important;
+  box-shadow: 0 10px 40px hsl(38 85% 55% / 0.5) !important;
 }
 
 .btn-primary:active {
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 /* Foreground button hover effects */
 .btn-foreground {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, box-shadow;
 }
 
 .btn-foreground:hover {
-  transform: scale(1.1);
-  background-color: hsl(210 40% 90%);
-  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+  background-color: hsl(210 40% 90%) !important;
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.3) !important;
 }
 
 .btn-foreground:active {
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 /* Glass button hover effects */
 .btn-glass {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, box-shadow, border-color;
 }
 
 .btn-glass:hover {
-  transform: scale(1.1);
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15) !important;
 }
 
 .btn-glass:active {
-  transform: scale(1.05);
+  transform: scale(0.98);
 }
 
 /* Form submit button hover effects */
 .btn-submit {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, box-shadow;
 }
 
 .btn-submit:hover {
-  transform: scale(1.05);
-  background-color: hsl(38 85% 50%);
-  box-shadow: 0 10px 40px hsl(38 85% 55% / 0.4);
+  background-color: hsl(38 85% 45%) !important;
+  box-shadow: 0 10px 40px hsl(38 85% 55% / 0.5) !important;
 }
 
 .btn-submit:active {
-  transform: scale(1.02);
+  transform: scale(0.98);
 }
 
 /* White background button hover effects */
 .btn-white {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, background-color, box-shadow;
 }
 
 .btn-white:hover {
-  transform: scale(1.05);
-  background-color: white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background-color: white !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
 }
 
 .btn-white:active {
-  transform: scale(1.02);
+  transform: scale(0.98);
+}
+
+/* Enhanced Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px hsl(38 85% 55% / 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 40px hsl(38 85% 55% / 0.4);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      hsl(38 85% 55% / 0.1) 50%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: hsl(38 85% 55% / 0.3);
+  color: white;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(38 85% 55%);
+  outline-offset: 2px;
+}
+
+/* Image loading placeholder */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Card hover lift effect */
+.card-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Text gradient effect */
+.text-gradient {
+  background: linear-gradient(135deg, hsl(38 85% 55%) 0%, hsl(38 85% 70%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Backdrop blur fallback */
+@supports not (backdrop-filter: blur(24px)) {
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.8);
+  }
 }
